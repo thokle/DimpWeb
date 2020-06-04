@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="dlu-persistence-api">
+      <HintPath>..\dlu-persistence-service\dlu-persistence-api\bin\Debug\dlu-persistence-api.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+</Project>
