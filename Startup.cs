@@ -15,6 +15,8 @@ namespace DimpWeb
 {
     public class Startup
     {
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,6 +27,19 @@ namespace DimpWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+                options.AddPolicy(name: MyAllowSpecificOrigins, builer =>
+{
+    
+builer.WithOrigins("*").AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    
+
+});
+            }
+            );
+
+        
+            services.AddMvc().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSingleton<IPricesFromWebService, PricesFromWebService>();
             services.AddControllers();
         }
@@ -36,13 +51,10 @@ namespace DimpWeb
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

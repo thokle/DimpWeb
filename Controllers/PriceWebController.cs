@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using dlu_persistence_api.services;
 using dlu_persistence_api.daos;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+using dlu_persistence_api;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
+using Microsoft.AspNetCore.Http;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DimpWeb.Controllers
@@ -34,9 +40,23 @@ namespace DimpWeb.Controllers
         }
 
         // POST api/<PriceWebController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost, AllowAnonymous]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public void Post(PriceWebUpdate value)
         {
+            try
+            {
+              
+                priceAskingService.UpdatePrisTilWeb(value);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+         
+        
         }
 
         // PUT api/<PriceWebController>/5
